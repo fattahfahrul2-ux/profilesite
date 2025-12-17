@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F1 Legends Showcase</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-snap-type: y mandatory; 
+            height: 100vh;
+            overflow-y: scroll;
+        }
+
+        body {
+            background-image: url('https://i.pinimg.com/736x/49/ca/fe/49cafe61f30e6da84ac47abfd7fbea9a.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-color: #111;
+            color: #eee;
+            overflow-x: hidden; 
+        }
+
+        section, header {
+            height: 100vh; 
+            width: 100%;
+            scroll-snap-align: start;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden; 
+            background-color: rgba(0, 0, 0, 0.7); 
+            perspective: 1500px;
+        }
+
+        header {
+            flex-direction: column;
+            z-index: 10;
+            background-color: transparent; 
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.3), #000), 
+                        url('https://i.pinimg.com/736x/49/ca/fe/49cafe61f30e6da84ac47abfd7fbea9a.jpg');
+            background-size: cover;
+            background-position: center;
+            z-index: -1; 
+            transform: translateZ(-200px) scale(1.5);
+            transition: transform 3s ease-out;
+        }
+
+        .header-content {
+            text-align: center;
+            z-index: 2;
+            padding: 20px;
+            transform-style: preserve-3d;
+            transform: translateZ(50px);
+        }
+
+        .header-content h1 {
+            font-size: 6rem;
+            text-transform: uppercase;
+            font-style: italic;
+            letter-spacing: -2px;
+            margin-bottom: 10px;
+            color: transparent;
+            -webkit-text-stroke: 2px #ff1801;
+            background: linear-gradient(45deg, #eee, #999);
+            -webkit-background-clip: text;
+            background-clip: text;
+            text-shadow: 5px 5px 0px rgba(0,0,0,0.8), 10px 10px 20px rgba(0,0,0,0.5);
+            opacity: 0;
+            transform: rotateX(90deg);
+            transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .header-content p {
+            font-size: 1.5rem;
+            color: #fff;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1s ease-out 0.5s;
+        }
+
+        header.show .hero-bg { transform: translateZ(0) scale(1); }
+        header.show .header-content h1 { opacity: 1; color: #eee; transform: rotateX(0); }
+        header.show .header-content p { opacity: 1; transform: translateY(0); }
+
+
+        .content-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            max-width: 1300px;
+            width: 100%;
+            padding: 0 40px;
+            gap: 60px;
+            transform-style: preserve-3d; 
+        }
+
+        .row-reverse { flex-direction: row-reverse; }
+
+        .image-box {
+            flex: 1.2;
+            height: 450px;
+            position: relative;
+            border-radius: 20px;
+            opacity: 0;
+            transform: translateX(-100px) rotateY(-45deg) translateZ(-100px);
+            transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+            box-shadow: -20px 20px 50px rgba(0,0,0,0.8), 0 0 0 5px rgba(255, 255, 255, 0.05);
+        }
+
+        .row-reverse .image-box {
+            transform: translateX(100px) rotateY(45deg) translateZ(-100px);
+            box-shadow: 20px 20px 50px rgba(0,0,0,0.8);
+        }
+
+        .image-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 20px;
+            display: block;
+        }
+
+        .text-box {
+            flex: 1;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            animation: float 6s ease-in-out infinite;
+            opacity: 0;
+            transform: translateX(50px) translateZ(50px);
+            transition: all 1s ease-out 0.2s;
+        }
+
+        .row-reverse .text-box {
+            transform: translateX(-50px) translateZ(50px);
+        }
+
+        .text-box h2 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            font-style: italic;
+            font-weight: 800;
+            background: linear-gradient(90deg, #fff, #aaa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            border-left: 8px solid #ff1801;
+            padding-left: 20px;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.5));
+        }
+
+        .text-box p {
+            line-height: 1.8;
+            font-size: 1.1rem;
+            color: #ddd;
+            text-align: justify;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px) translateZ(50px); }
+            50% { transform: translateY(-15px) translateZ(50px); }
+            100% { transform: translateY(0px) translateZ(50px); }
+        }
+
+        .team-section.show .image-box {
+            opacity: 1;
+            transform: translateX(0) rotateY(0) translateZ(0);
+        }
+
+        .team-section.show .text-box {
+            opacity: 1;
+        }
+
+
+        .creator-footer {
+            position: fixed;
+            bottom: 20px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        .creator-footer span {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 600;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.3);
+            padding: 8px 15px;
+            border-radius: 20px;
+            backdrop-filter: blur(4px);
+        }
+
+        @media (max-width: 768px) {
+            .header-content h1 { font-size: 3rem; -webkit-text-stroke: 1px #ff1801; }
+            .content-wrapper { flex-direction: column; gap: 30px; perspective: none; }
+            .row-reverse { flex-direction: column; }
+            .image-box { width: 100%; height: 300px; transform: translateY(50px); }
+            .row-reverse .image-box { transform: translateY(50px); }
+            .text-box { width: 100%; padding: 20px; transform: translateY(50px); animation: none; }
+            .text-box h2 { font-size: 2.2rem; }
+            .team-section.show .image-box { transform: translateY(0); }
+            .team-section.show .text-box { transform: translateY(0); }
+            .creator-footer { bottom: 10px; }
+            .creator-footer span { font-size: 0.7rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="animate-on-scroll">
+        <div class="hero-bg"></div>
+        <div class="header-content">
+            <h1>Grid History</h1>
+            <p>The Pinnacle of Motorsport</p>
+        </div>
+    </header>
+
+    <section class="team-section animate-on-scroll">
+        <div class="content-wrapper content-normal">
+            <div class="image-box">
+                <img src="https://assets.blackxperience.com/content/blackauto/autonews/f677-still-both-02-v04-169.jpeg" alt="Ferrari F1">
+            </div>
+            <div class="text-box">
+                <h2 style="border-color: #ff2800;">Scuderia Ferrari</h2>
+                <p>
+                    Tim tertua dan paling sukses dalam sejarah. "The Prancing Horse" adalah agama bagi para Tifosi.
+                    Warna merah Maranello selalu menjadi simbol kecepatan murni, gairah, dan sejarah panjang balap Italia yang tak tergantikan.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="team-section animate-on-scroll">
+        <div class="content-wrapper row-reverse">
+            <div class="image-box">
+                <img src="https://images.ps-aws.com/c?url=https%3A%2F%2Fd3cm515ijfiu6w.cloudfront.net%2Fwp-content%2Fuploads%2F2025%2F04%2F01074537%2Fred-bull-rb21-f1-2025-japanese-grand-prix-livery-suzuka-honda-ra272-1320x742.png" alt="Red Bull F1">
+            </div>
+            <div class="text-box">
+                <h2 style="border-color: #121f45;">Red Bull Racing</h2>
+                <p>
+                    Dari tim pesta menjadi dominator. Dengan kejeniusan aerodinamika Adrian Newey, mereka mendobrak hegemoni lama.
+                    Max Verstappen membuktikan bahwa merek minuman energi ini memiliki sayap yang lebih cepat dari siapapun.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="team-section animate-on-scroll">
+        <div class="content-wrapper content-normal">
+            <div class="image-box">
+                <img src="https://assets.blackxperience.com/content/blackauto/autonews/dj7e75g-67cd0b5b-db45-449f-ac3d-4cad15bcb1c6.jpg" alt="Mercedes F1">
+            </div>
+            <div class="text-box">
+                <h2 style="border-color: #00d2be;">Mercedes-AMG</h2>
+                <p>
+                    "The Silver Arrows". Dominasi total era Turbo Hybrid. Efisiensi teknik Jerman di level tertinggi.
+                    Lewis Hamilton dan Mercedes telah menulis ulang hampir semua buku rekor, menjadikan mereka standar emas kesempurnaan teknis.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="team-section animate-on-scroll">
+        <div class="content-wrapper row-reverse">
+            <div class="image-box">
+                <img src="https://mclaren.bloomreach.io/cdn-cgi/image/format=webp,quality=80/delivery/resources/content/gallery/mclaren-racing/formula-1/2025/nsr/f1-75-live-m/web/mcl39-papaya-pr-inline-1.jpg" alt="McLaren F1">
+            </div>
+            <div class="text-box">
+                <h2 style="border-color: #ff8000;">McLaren</h2>
+                <p>
+                    Warna Pepaya yang ikonik. Rumah bagi legenda seperti Senna dan Prost.
+                    McLaren adalah definisi inovasi tanpa henti dan semangat juang garasi Inggris yang kental di setiap tikungan sirkuit.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="team-section animate-on-scroll">
+        <div class="content-wrapper content-normal">
+            <div class="image-box">
+                <img src="https://cdn.williamsf1.tech/images/fnx611yr/production/73b5093008eb496988ce18ce84b6388869547570-4088x3066.jpg?h=960&auto=format" alt="Williams F1">
+            </div>
+            <div class="text-box">
+                <h2 style="border-color: #005aff;">Williams Racing</h2>
+                <p>
+                    Tim independen legendaris. Frank Williams membangun kerajaan ini dari nol.
+                    Mendominasi tahun 90-an dengan teknologi suspensi aktif. Bukti bahwa tekad baja bisa mengalahkan raksasa pabrikan.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="team-section animate-on-scroll">
+        <div class="content-wrapper row-reverse">
+            <div class="image-box">
+                <img src="https://assets.blackxperience.com/content/blackauto/autonews/202502haas-unveils-vf-25-scaled-1.jpeg" alt="Haas F1">
+            </div>
+            <div class="text-box">
+                <h2 style="border-color: #fff;">Haas F1 Team</h2>
+                <p>
+                    Satu-satunya wakil Amerika. Pendekatan pragmatis, efisien, dan berani.
+                    Meski termuda, semangat "underdog" mereka selalu memberikan kejutan dan warna tersendiri di kerasnya papan tengah F1.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <div class="creator-footer">
+        <span>Created by Farid Fahrul Fattah</span>
+    </div>
+
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('show');
+                } else {
+                    entry.target.classList.remove('show');
+                }
+            });
+        }, {
+            threshold: 0.2
+        });
+
+        const hiddenSections = document.querySelectorAll('.animate-on-scroll');
+        hiddenSections.forEach((el) => observer.observe(el));
+    </script>
+
+</body>
+</html>
